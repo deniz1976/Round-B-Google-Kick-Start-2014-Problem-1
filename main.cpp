@@ -30,8 +30,17 @@ However, these passwords are not possible:
  */
 
 #include <iostream>
+
 using namespace std;
-int passwordSolver(int n,int m);
+
+int passwordSolver(int n, int m);
+
+[[maybe_unused]] int combination(int number, int n);
+
+int permutation(int number, int n);
+
+int factoriel(int number);
+
 int main() {
     int m; // password contains m different keys.
     int n; // password contains n digits.
@@ -39,9 +48,7 @@ int main() {
     if (m >= 3 && n >= 3 && m <= n) {
         std::cout << "number of digits " << n << std::endl;
         std::cout << "number of keys " << m << std::endl;
-        passwordSolver(n,m);
-
-
+        passwordSolver(n, m);
 
 
     } else {
@@ -50,14 +57,26 @@ int main() {
     return 0;
 }
 
-[[nodiscard]] int passwordSolver(int n,int m) {
+[[nodiscard]] int passwordSolver(int n, int m) {
 
 
     return 0;
 }
-int permutation(int number){
-    return 0;
+
+int permutation(int number, int n) {
+    int numberFactoriel = factoriel(number);
+    int nFactoriel = factoriel(number-n);
+    return numberFactoriel / nFactoriel;
 }
-int combination(int number){
-    return 0;
+
+[[maybe_unused]] int combination(int number, int n) {
+    return permutation(number,n) / factoriel(n) ;
+}
+
+int factoriel(int number){
+    int factoriel = 1;
+    for(int i = 1 ; i < number + 1 ; i++){
+        factoriel *= i;
+    }
+    return factoriel;
 }
