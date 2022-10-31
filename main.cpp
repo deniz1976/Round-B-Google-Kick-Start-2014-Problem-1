@@ -35,11 +35,11 @@ using namespace std;
 
 int passwordSolver(int n, int m);
 
-[[maybe_unused]] int combination(int number, int n);
+[[maybe_unused]] double combination(double number, double n);
 
-int permutation(int number, int n);
+double permutation(double number, double n);
 
-int factoriel(int number);
+double factoriel(double number);
 
 int main() {
     int m; // password contains m different keys.
@@ -49,33 +49,37 @@ int main() {
         std::cout << "number of digits " << n << std::endl;
         std::cout << "number of keys " << m << std::endl;
         passwordSolver(n, m);
-
-
     } else {
         std::cout << "impossible password" << std::endl;
     }
+//std::cout << combination(31,12);
     return 0;
 }
 
 [[nodiscard]] int passwordSolver(int n, int m) {
-
-
-    return 0;
+    int nMinusM = n - m;
+    int keysquare = m;
+    int solution;
+    for (int i = 1; i < nMinusM; i++) {
+        keysquare *= keysquare;
+    }
+    solution = factoriel(m) * factoriel(n) / m * factoriel(n - m);
+    return solution;
 }
 
-int permutation(int number, int n) {
-    int numberFactoriel = factoriel(number);
-    int nFactoriel = factoriel(number-n);
+double permutation(double number, double n) {
+    double numberFactoriel = factoriel(number);
+    double nFactoriel = factoriel(number - n);
     return numberFactoriel / nFactoriel;
 }
 
-[[maybe_unused]] int combination(int number, int n) {
-    return permutation(number,n) / factoriel(n) ;
+[[maybe_unused]] double combination(double number, double n) {
+    return permutation(number, n) / factoriel(n);
 }
 
-int factoriel(int number){
-    int factoriel = 1;
-    for(int i = 1 ; i < number + 1 ; i++){
+double factoriel(double number) {
+    double factoriel = 1;
+    for (double i = 1; i < number + 1; i++) {
         factoriel *= i;
     }
     return factoriel;
