@@ -3,4 +3,4 @@ project(PasswordAttacker)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(PasswordAttacker main.cpp)
+add_executable(PasswordAttacker PasswordAttacker.cpp)
