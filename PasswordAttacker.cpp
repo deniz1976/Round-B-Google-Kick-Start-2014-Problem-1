@@ -27,82 +27,91 @@ However, these passwords are not possible:
 3355  // There is fingerprint on key '7',
          so '7' must occur at least once.
 357   // Eve knows the password must be a 4-digit number.
+
+The first line of the input gives the number of test cases, T.
+
+For the next T lines, each contains two space-separated numbers M and N, indicating a test case.
+
+For each test case, output one line containing "Case #x: y", where x is the test case number (starting from 1) and y is the total number of possible passwords modulo 1000000007(109+7).
+
+T = 15.
+1 ≤ M ≤ N ≤ 7.
+
+4
+1 1
+3 4
+5 5
+15 15
+ 
+Case #1: 1
+Case #2: 36
+Case #3: 120
+Case #4: 674358851
+
  */
 
 #include <iostream>
 
-using namespace std;
+const int MOD = 1000000007;
 
-[[maybe_unused]] std::string ttt([[maybe_unused]] const std::string &k, int m);
+long long factorial(int n) {
+    long long result = 1;
+    for (int i = 2; i <= n; i++) {
+        result = (result * i) % MOD;
+    }
+    return result;
+}
 
-int passwordSolver(int n, int m);
+long long power(long long base, int exp) {
+    long long result = 1;
+    while (exp > 0) {
+        if (exp & 1) {
+            result = (result * base) % MOD;
+        }
+        base = (base * base) % MOD;
+        exp >>= 1;
+    }
+    return result;
+}
 
-[[maybe_unused]] double combination(double number, double n);
+long long modInverse(long long a) {
+    return power(a, MOD - 2);
+}
 
-double permutation(double number, double n);
+long long nCr(int n, int r) {
+    if (r > n) return 0;
+    long long num = factorial(n);
+    long long den = (factorial(r) * factorial(n - r)) % MOD;
+    return (num * modInverse(den)) % MOD;
+}
 
-double factoriel(double number);
+long long calculatePasswords(int M, int N) {
+    long long result = 0;
+    
+    for (int m = 0; m <= M; m++) {
+        long long term = nCr(M, m);
+        term = (term * power(M - m, N)) % MOD;
+        if (m % 2 == 0) {
+            result = (result + term) % MOD;
+        } else {
+            result = (result - term + MOD) % MOD;
+        }
+    }
+    
+    return result;
+}
 
 int main() {
-    int m; // password contains m different keys.
-    int n; // password contains n digits.
-    std::cin >> n >> m;
-    if (m >= 3 && n >= 3 && m <= n) {
-        std::cout << "number of digits " << n << std::endl;
-        std::cout << "number of keys " << m << std::endl;
-        passwordSolver(n, m);
-    } else {
-        std::cout << "impossible password" << std::endl;
+    int T;
+    std::cin >> T;
+    
+    for (int t = 1; t <= T; t++) {
+        int M, N;
+        std::cin >> M >> N;
+        
+        long long result = calculatePasswords(M, N);
+        std::cout << "Case #" << t << ": " << result << std::endl;
     }
-    ttt("", 5);
-
-//    delete &ttt;
-//std::cout << combination(31,12);
+    
     return 0;
-}
-
-[[nodiscard]] int passwordSolver(int n, int m) {
-//    int nMinusM = n - m;
-//    int keysquare = m;
-//    int solution;
-//    for (int i = 1; i < nMinusM; i++) {
-//        keysquare *= keysquare;
-//    }
-//    solution = factoriel(m) * factoriel(n) / m * factoriel(n - m);
-//    return solution;
-    int k = 1;
-    for (int i = 0; i < n - m; i++) {
-        k *= m;
-    }
-    int solution = 1;
-    solution *= k;
-    solution *= factoriel(m);
-    solution *= factoriel(n-m+1);
-//    solution *= combination(n-m,m);
-    std::cout << solution << std::endl;
-
-    int abc;
-    return 0;
-}
-
-double permutation(double number, double n) {
-    double numberFactoriel = factoriel(number);
-    double nFactoriel = factoriel(number - n);
-    return numberFactoriel / nFactoriel;
-}
-
-[[maybe_unused]] double combination(double number, double n) {
-    return permutation(number, n) / factoriel(n);
-}
-
-double factoriel(double number) {
-    double factoriel = 1;
-    for (double i = 1; i < number + 1; i++) {
-        factoriel *= i;
-    }
-    return factoriel;
-}
-
-[[maybe_unused]] std::string ttt([[maybe_unused]] const std::string &k, int m) {
-    return "234";
 }
